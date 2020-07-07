@@ -11,6 +11,39 @@ int fact(int n){
     return res;
 }
 
+vector<vector<int>> maketrees(vector<int> vals){
+	if(vals.size() == 2){
+		vector<vector<int>> x = {vals, {vals.back(), vals.front()}};
+		std::cout<<"x: {{"<<x[0][0]<<","<<x[0][1]<<"}, {"<<x[1][0]<<","<<x[1][1]<<"}}\n";
+		return x;
+	}
+	else{
+		vector<vector<int>> res;
+		vector<int> t;
+		vector<vector<int>> m;
+		for(int i=0; i < vals.size(); i++){
+			int z = vals[i];
+			for(int j=0; j < vals.size(); j++){
+				if(i != j){
+					int a = vals[j];
+					t.push_back(vals[j]);
+				}
+			}
+			m = maketrees(t);
+			t.clear();
+			t.resize(0);
+			for(int k=0; k < m.size(); k++){
+				m[k].push_back(z);
+				res.insert(res.begin(), m[k]);
+			}
+			m.clear();
+			m.resize(0);
+		}
+		std::cout<<"Res preview: {{"<<res[0][0]<<","<<res[0][1]<<","<<res[0][2]<<"}, {"<<res[1][0]<<","<<res[1][1]<<","<<res[1][2]<<"}...}\n";
+		return res;
+	}
+}
+
 
 int main() {
 	
@@ -22,6 +55,7 @@ int main() {
 	vector<int> vals;
 	vector<vector<int>> edges;
 	vector<int> temp;
+	vector<vector<int>> trees;
 	
 	for (int j = 0; j < t; j++){
     	cin >> n;
@@ -42,9 +76,11 @@ int main() {
     	    std::cout<<"Edge "<<i<<": "<<edges[i].at(0)<<" "<<edges[i].at(1)<<"\n";
     	}
     	
-    	int numtrees = fact(n);
-    	std::cout<<"numtree of n = "<<n<<": "<<numtrees<<"\n";
-    	int trees[numtrees][n];
+    	trees = maketrees(vals);
+    	for (int i=0; i < trees.size(); i++){
+    		std::cout<<i<<" Tree: "<<trees[i][0]<<trees[i][1]<<trees[i][2]<<"\n";
+    	}
+
     	
     	vals.clear();
     	edges.clear();
