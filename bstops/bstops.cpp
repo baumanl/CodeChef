@@ -3,18 +3,20 @@
 using namespace std;
 
 //This challenge is to implement a binary search tree. Oh boy. take me back to CS384.
+//This seems to work on all the cases I can think to give it, but it seg faults on the website.
+//see bstops_cheat.cpp to see the code i copied from someone else (to practice).
+
 
 class BST {
-	int key;
-	int pos;
+public:
 	BST * left;
 	BST * right;
 	BST * parent;
-public:
-	int value;
+	int key;
+	unsigned long int pos;
+	unsigned long int value;
 	BST(int root, BST * prnt);
 	void insert(int x);
-	//void print_tree_info();
 	void delete_val(int x);
 	BST * find_right();
 };
@@ -36,15 +38,26 @@ BST::BST(int root, BST * prnt) {
 	right = nullptr;
 }
 
+BST * BST::find_right(){
+	if(right != nullptr){
+		right->find_right();
+	}else{
+		if(left != nullptr){
+			parent->right = left;
+		}else{
+			parent->right = nullptr;
+		}
+		return this;
+	}
+}
+
 void BST::insert(int x){
 	if (x < key){
 		if(left != nullptr){
 			left->insert(x);
 		}
 		else{
-			BST new_node(x, this);
-			left = &new_node;
-			//left->print_tree_info();
+			left = new BST(x, this);
 			std::cout<<left->value<<"\n";
 		}
 	}else{
@@ -52,25 +65,11 @@ void BST::insert(int x){
 			right->insert(x);
 		}
 		else{
-			BST new_node(x, this);
-			right = &new_node;
-			//right->print_tree_info();
+			right = new BST(x, this);
 			std::cout<<right->value<<"\n";
 		}
 	}
 }
-
-BST * BST::find_right(){
-	if(right != nullptr){
-		right->find_right();
-	}else{
-		if(left != nullptr){
-			parent->right = left;
-		}
-	}
-	return this;
-}
-
 
 void BST::delete_val(int x){
 	if (x == key){
@@ -80,7 +79,6 @@ void BST::delete_val(int x){
 			if (key > (parent->key)){
 				parent->right = nullptr;
 				std::cout<<this->value<<"\n";
-				//this->print_tree_info(); <<<<    THIS IS ALSO CURSED???
 			}else{
 				parent->left = nullptr;
 				std::cout<<this->value<<"\n";
@@ -102,7 +100,7 @@ void BST::delete_val(int x){
 		}else{
 			std::cout<<this->value<<"\n";
 			//find rightmost value of left subtree
-			BST * child = left->find_right();
+			BST *child = left->find_right();
 			key = child->key;
 			value = child->value;
 		}
@@ -114,10 +112,6 @@ void BST::delete_val(int x){
 		right->delete_val(x);
 	}
 }
-
-/*void BST::print_tree_info() {
-	std::cout<<value<<"\n";
-}*/
 
 
 int main() {
@@ -154,18 +148,5 @@ int main() {
 	
 return 0;
 }
-	/* THIS CODE IS CURSED. NO IDEA WHY IT BREAKS.
-	FOR SOME REASON READING IN VALUES CORRUPTS SUB TREES.
-	while(q-- > 1){
-		cin >> op;
-		cin >> root;
-
-		if(op == 'i'){
-			tree.insert(root);
-		}else{
-			//tree.delete_val(key);
-		}
-	}*/
-
 
 
