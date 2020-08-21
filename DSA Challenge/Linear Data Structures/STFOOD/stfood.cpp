@@ -12,6 +12,22 @@ int main(){
 	#ifndef ONLINE_JUDGE
 		freopen("in.txt", "r", stdin);
 	#endif
+
+	int t, n, s, p, v;
+	ll max_p, prof;
+	cin >> t;
+	while(t>0){
+		t--;
+		cin>>n;
+		max_p = 0;
+		while (n>0){
+			n--;
+			cin>>s>>p>>v;
+			prof = v * floor(p/(s+1));
+			if (prof > max_p) {max_p = prof;}
+		}
+		cout<<max_p<<"\n";
+	}
 	
 
 	return 0;

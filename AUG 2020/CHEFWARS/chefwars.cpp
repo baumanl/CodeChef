@@ -12,6 +12,24 @@ int main(){
 	#ifndef ONLINE_JUDGE
 		freopen("in.txt", "r", stdin);
 	#endif
+
+	double t, p, h, total;
+	cin >> t;
+	while (t > 0){
+		t--;
+		total = 0;
+		cin >> h >> p;
+		while (p > 0){
+			total += p;
+			p = floor(p/2); 
+		}
+
+		if (total >= h){
+			p(1);
+		}else{
+			p(0);
+		}
+	}
 	
 
 	return 0;
